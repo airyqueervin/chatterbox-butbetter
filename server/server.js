@@ -9,6 +9,7 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '../public')));
 // serve up bundles folder on enpoint /bundles
 app.use('/bundles', express.static(path.join(__dirname, '../bundles')));
+app.use('/client', express )
 
 app.get('/', function (req, res) {
   res.send('Hello World!');

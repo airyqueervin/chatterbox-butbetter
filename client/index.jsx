@@ -1,19 +1,47 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Test from './components/Test.jsx';
+
+import ChatBox from './components/ChatBox/ChatBox.jsx';
+import ChatList from './components/ChatList/ChatList.jsx';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      messages: [
+        {
+          username: "Abe",
+          text: "hello what's up"
+        },
+        {
+          username: "Toby",
+          text: "hurry up"
+        },
+        {
+          username: "ButteredLettuce",
+          text: "i'm hella tired right now lol"
+        }
+      ]
+    };
+
+    this.submitMessage = this.submitMessage.bind(this);
+  }
+
+  submitMessage(message) {
+    this.setState({
+      messages: [...this.state.messages, message]
+    });
   }
 
   render() {
     return (
-      <div>Hello world what up lol</div>
+      <div>
+        <ChatBox submitMessage={this.submitMessage} />
+        <ChatList messages={this.state.messages} />
+      </div>
     );
   }
 }
 
-ReactDOM.render(<App />, document.getElementById('app'))
+ReactDOM.render(<App />, document.getElementById('app'));
