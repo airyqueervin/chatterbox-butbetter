@@ -1,24 +1,19 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
+
+const MessageRouter = require('./routes/messageRouter.js');
+
 const app = express();
-const port = process.env.port || 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
-// serve up public folder on endpoint /
 app.use(express.static(path.join(__dirname, '../public')));
-// serve up bundles folder on enpoint /bundles
 app.use('/bundles', express.static(path.join(__dirname, '../bundles')));
-app.use('/client', express )
 
-app.get('/', function (req, res) {
-  res.send('Hello World!');
-});
+// We're gonna mount the router here
+app.use('/api', MessageRouter);
 
-// app.get('/', function (req, res, next) {
-//   res.send('Hello World!');
-// });
-
-app.listen(port, () => {
-  console.log(`Better app listening on port ${port}!`);
+app.listen(PORT, () => {
+  console.log(`Server is up and running on port ${PORT}`);
 });
