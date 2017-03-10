@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
+import axios from 'axios';
 import ChatBox from './components/ChatBox/ChatBox.jsx';
 import ChatList from './components/ChatList/ChatList.jsx';
 
@@ -9,28 +9,39 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      messages: [
-        {
-          username: "Abe",
-          text: "hello what's up"
-        },
-        {
-          username: "Toby",
-          text: "hurry up"
-        },
-        {
-          username: "ButteredLettuce",
-          text: "i'm hella tired right now lol"
-        }
-      ]
+      username: window.prompt("What's your name?"),
+      messages: []
     };
 
     this.submitMessage = this.submitMessage.bind(this);
+    this.getMessages = this.getMessages.bind(this);
+    this.getMessages()
+  }
+
+  getMessages() {
+    axios.get('/api/message')
+      .then(({ data }) => {
+        this.setState({
+          messages: data
+        });
+      })
+      .catch(err => {
+        console.log("Well this failed", err)
+      })
   }
 
   submitMessage(message) {
-    this.setState({
-      messages: [...this.state.messages, message]
+    axios.post('/api/message', {
+      username: this.state.username,
+      text: message
+    })
+    .then(({ data }) => {
+      this.setState({
+        messages: data
+      });
+    })
+    .catch(err => {
+      console.log('Dang it borked!', err)
     });
   }
 
